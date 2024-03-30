@@ -1,0 +1,37 @@
+#R-code for K means Clustering algorithm:
+# Scale the Data
+scaled_data <- scale(segmentation_data[, c("Age", "Income")])
+
+# Determine the Number of Clusters (k)
+# For demonstration purposes, let's use the Elbow Method to determine the optimal k
+# You can replace this with any other method for determining k
+wss <- numeric(10)  # Within-cluster sum of squares
+for (i in 1:10) {
+  kmeans_model <- kmeans(scaled_data, centers = i)
+  wss[i] <- kmeans_model$tot.withinss
+}
+
+# Plot the Elbow Method graph
+plot(1:10, wss, type = "b", xlab = "Number of Clusters",
+     ylab = "Within-cluster Sum of Squares",
+     main = "Elbow Method to Determine Optimal k")
+
+#Apply K-means Clustering
+# Based on the Elbow Method, let's choose k = 3
+k <- 3
+kmeans_result <- kmeans(scaled_data, centers = k)
+
+# Analyze the Results
+# Assign cluster labels to each data point
+cluster_labels <- kmeans_result$cluster
+
+# Add cluster labels to the original dataset
+segmentation_data$cluster <- factor(cluster_labels)
+
+# View the cluster centers
+print(kmeans_result$centers)
+
+# Summary of clusters
+summary(cluster_labels)
+
+
