@@ -1,0 +1,11 @@
+# Load necessary libraries
+library(cluster)
+
+# Selecting columns for clustering
+segmentation_selected <- segmentation_data[, c("Age", "Income")]
+
+# Perform AGNES clustering
+agnes_model <- agnes(segmentation_selected, method = "ward")
+
+# Plot the dendrogram
+plot(agnes_model, which.plot = 2, hang = -1)
