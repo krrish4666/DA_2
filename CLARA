@@ -1,3 +1,6 @@
+library(cluster)
+library(tidyverse)
+library(factoextra)
 # Select only the numerical attributes for clustering
 segmentation_numeric <- segmentation_data %>% select(-ID)
 
