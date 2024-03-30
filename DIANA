@@ -1,0 +1,15 @@
+install.packages("cluster")
+library(cluster)
+
+# Assuming 'age' and 'annual_income' are the features for clustering
+diana_result <- diana(segmentation_data[, c("Age", "Income")])
+
+#Analyze the Results
+# Assign cluster labels to each data point
+cluster_labels <- cutree(diana_result, k = 3)  # Assuming you want 3 clusters
+
+# Add cluster labels to the original dataset
+segmentation_data$cluster <- factor(cluster_labels)
+
+# Summary of clusters
+summary(cluster_labels)
