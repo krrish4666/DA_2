@@ -1,0 +1,27 @@
+# Select only the numerical attributes for clustering
+segmentation_numeric <- segmentation_data %>% select(-ID)
+
+# Perform clustering analysis using CLARA
+clara_result <- clara(segmentation_numeric, k = 2)
+
+# Determine the optimal number of clusters using silhouette method
+optimal_clusters <- fviz_nbclust(segmentation_numeric, FUNcluster = clara, method = "silhouette")  
+print(optimal_clusters)
+
+# Perform CLARA clustering with k = 2
+clara_res <- clara(segmentation_numeric, 2, metric = "euclidean", stand = TRUE, correct.d = FALSE)
+print(clara_res)
+
+# Combine clustering results with original data
+dd <- data.frame(segmentation_numeric, cluster = clara_res$clustering)
+head(dd)
+
+# Filter out constant columns if needed
+constant_columns <- sapply(segmentation_numeric, function(x) length(unique(x)) <= 1)
+segmentation_filtered <- segmentation_numeric[, !constant_columns]
+
+# Perform CLARA clustering on filtered data with k = 5 (if needed)
+clara_res_filtered <- clara(segmentation_filtered, k = 5)
+
+# Visualize the clusters (if needed)
+fviz_cluster(clara_res_filtered, data = segmentation_filtered)
