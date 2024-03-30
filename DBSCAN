@@ -1,0 +1,22 @@
+#Apply DBSCAN Clustering
+install.packages("dbscan")
+library(dbscan)
+
+# Assuming 'age' and 'annual_income' are the features for clustering
+dbscan_result <- dbscan(segmentation_data[, c("Age", "Income")], eps = 0.5, minPts = 5)
+
+#Analyze the Results
+# Assign cluster labels to each data point
+cluster_labels <- dbscan_result$cluster
+
+# Add cluster labels to the original dataset
+segmentation_data$cluster <- factor(cluster_labels)
+
+# Number of clusters (excluding noise points)
+num_clusters <- length(unique(cluster_labels)) - 1  # Subtract 1 to exclude noise points
+
+# Number of noise points
+num_noise_points <- sum(cluster_labels == 0)
+
+# Summary of clusters
+summary(cluster_labels)
